@@ -1,0 +1,46 @@
+From 090e17b0f421b783d4f79746318e0f6f5b2fe28d Mon Sep 17 00:00:00 2001
+From: Caleb <precisioncomputerguy515@gmail.com>
+Date: Tue, 31 Mar 2020 17:09:45 -0400
+Subject: [PATCH] Disable weather cycle
+
+
+diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
+index 8f3511f8..267386b4 100644
+--- a/src/main/java/net/minecraft/server/World.java
++++ b/src/main/java/net/minecraft/server/World.java
+@@ -2142,7 +2142,7 @@ public abstract class World implements IBlockAccess {
+                 } else {
+                     --j;
+                     this.worldData.setThunderDuration(j);
+-                    if (j <= 0) {
++                    if (!this.paperSpigotConfig.disableWeatherCycle && j <= 0) { // PaperSpigot - Disable weather cycle
+                         this.worldData.setThundering(!this.worldData.isThundering());
+                     }
+                 }
+@@ -2166,7 +2166,7 @@ public abstract class World implements IBlockAccess {
+                 } else {
+                     --k;
+                     this.worldData.setWeatherDuration(k);
+-                    if (k <= 0) {
++                    if (!this.paperSpigotConfig.disableWeatherCycle && k <= 0) { // PaperSpigot - Disable weather cycle
+                         this.worldData.setStorm(!this.worldData.hasStorm());
+                     }
+                 }
+diff --git a/src/main/java/org/github/paperspigot/PaperSpigotWorldConfig.java b/src/main/java/org/github/paperspigot/PaperSpigotWorldConfig.java
+index 67e56df0..1649529d 100644
+--- a/src/main/java/org/github/paperspigot/PaperSpigotWorldConfig.java
++++ b/src/main/java/org/github/paperspigot/PaperSpigotWorldConfig.java
+@@ -408,4 +408,10 @@ public class PaperSpigotWorldConfig
+     {
+         disableTeleportationSuffocationCheck = getBoolean("disable-teleportation-suffocation-check", false);
+     }
++
++    public boolean disableWeatherCycle;
++    private void disableWeatherCycle()
++    {
++        disableWeatherCycle = getBoolean("disable-weather-cycle", false);
++    }
+ }
+-- 
+2.17.1
+
